@@ -7,10 +7,10 @@ pragma solidity ^0.8.0;
 
 contract MultiSigWallet {
 
-  
+  // Mapping of signatories to their corresponding addresses
   mapping(address => bool) public signatories;
 
-  
+  // Address of the admin of the access registry contract
   address public admin;
 
   constructor() {
@@ -20,25 +20,25 @@ contract MultiSigWallet {
 
   
   function addSignatory(address _signatory) public {
-    require(msg.sender == admin, "Only the admin");
+    require(msg.sender == admin, "Only the admin can add signatories");
     signatories[_signatory] = true;
   }
 
   
   function revokeSignatory(address _signatory) public {
-    require(msg.sender == admin, "Only the admin");
+    require(msg.sender == admin, "Only the admin can revoke signatories");
     signatories[_signatory] = false;
   }
 
-  
+  // Renounces the admin's role and transfers it to a new admin
   function renounceAdmin() public {
-    require(msg.sender == admin, "Only the current admin");
-    admin = address(0); 
+    require(msg.sender == admin, "Only the current admin can renounce their role");
+    admin = address(0); // set the admin to the null address
   }
 
-  
+  // Transfers the admin role to a new admin
   function transferAdmin(address _newAdmin) public {
-    require(msg.sender == admin, "Only the current admin");
+    require(msg.sender == admin, "Only the current admin can transfer their role");
     admin = _newAdmin;
   }
 
